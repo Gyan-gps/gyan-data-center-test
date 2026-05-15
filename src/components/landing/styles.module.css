@@ -1,0 +1,207 @@
+.wrapper {
+  background: linear-gradient(
+    92.47deg,
+    rgba(24, 156, 222, 0.33) -39.01%,
+    #eaffea -38.99%,
+    #eaf6fe 50.05%,
+    #e3e1fc 136.46%
+  );
+  min-height: 100vh;
+  position: relative;
+}
+
+.mainContainer {
+  max-width: 1440px !important;
+  margin-inline: auto;
+  position: relative;
+}
+
+.topBar {
+  position: fixed;
+  min-height: 88px;
+  padding-inline: 50px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+
+  & img{
+    height:36px;
+  }
+  & h3{
+    font-family: 'Avenir Medium';
+    font-size: 28px;
+    margin-top: 0;
+    margin-bottom: -10px;
+    letter-spacing: 2.5px;
+  }
+  & small {
+    text-transform: uppercase;
+    font-size: 9px;
+    color: rgb(82, 82, 82)
+  }
+}
+
+.mainDetailsContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+/* MOBILE */
+@media (max-width: 1024px) {
+  .mainDetailsContainer {
+    flex-direction: column;
+    gap: 24px;
+  }
+}
+.rightSection {
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+  margin-top: 3rem;
+}
+
+.leftSection {
+  & > div {
+    position: fixed;
+    top: 88px;
+    & > h4 {
+      position: absolute;
+      padding: 0rem;
+      margin-left: 40px;
+      width: 440px;
+      top: clamp(10px, 7.72vh, 140px);
+      left: 0;
+      font: 600 clamp(20px, 2.22vw, 32px) / clamp(20px, 3.33vw, 48px)
+          "Avenir Roman",
+        "sans-serif";
+      & > span {
+        font-weight: 400 !important;
+        color: #189cde;
+      }
+    }
+    & > img {
+      position: fixed;
+      width: clamp(350px, 40.402vw, 913px);
+      bottom: 0rem;
+      left: 0rem;
+      object-fit: cover;
+    }
+  }
+}
+
+.credit {
+  position: absolute;
+  font: 400 12px / 18px "Avenir Roman", "sans-serif";
+  color: #5a5a5a;
+  text-align: right;
+  padding: 10px 0;
+  bottom: 0;
+  right: 0;
+}
+
+.driftSection {
+  position: fixed;
+  bottom: 8rem;
+  left: 0rem;
+  width: clamp(500px, 90%, 965.25px);
+  height: clamp(400px, 90%, 878.6px);
+  object-fit: cover;
+  opacity: 0.4;
+}
+
+.imgWrapper {
+  position: fixed;
+  overflow: hidden;
+}
+
+.imgWrapper > img {
+  animation-name: fade;
+  animation-iteration-count: infinite;
+  animation-duration: 40s;
+}
+
+
+.bgFade2 {
+  animation-delay: -20s;
+}
+
+.textWrapper {
+  position: relative;
+  & > h4 {
+    position: absolute;
+    animation-name: fadeText;
+    animation-iteration-count: infinite;
+    animation-duration: 40s;
+  }
+}
+
+.nametag:nth-child(2){
+  animation-delay: -20s;
+}
+
+
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 0;
+  }
+  33% {
+    opacity: 0;
+  }
+  53% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+@keyframes fadeText {
+  0% {
+    opacity: 1;
+  }
+  20% {
+    opacity: 0;
+  }
+  33% {
+    opacity: 0;
+  }
+  53% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* MOBILE TEXT FIX */
+@media (max-width: 1024px) {
+  .leftSection > div {
+    position: relative !important;
+    top: auto !important;
+  }
+
+  .textWrapper {
+    position: relative;
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  .textWrapper > h4 {
+    position: relative !important;
+    margin: 0 auto;
+    width: 100% !important;
+    left: auto !important;
+    margin-left: 0 !important;
+    top: auto !important;
+    font-size: clamp(18px, 5vw, 24px);
+    line-height: 1.4;
+  }
+}
