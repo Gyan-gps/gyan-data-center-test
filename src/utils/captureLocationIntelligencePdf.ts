@@ -61,7 +61,11 @@ async function captureSlide(
   await new Promise((r) => setTimeout(r, 300));
 
   const contentW = SLIDE_CSS_W;
-  let contentH = Math.max(el.scrollHeight, el.offsetHeight);
+  const contentH = Math.max(el.scrollHeight, el.offsetHeight);
+
+  // page = content + margin on all 4 sides
+  const pageW = contentW + MARGIN * 2;
+  const pageH = contentH + MARGIN * 2;
 
   // ── clone into fixed off-screen wrapper ─────────────────────────
   const wrapper = document.createElement("div");
@@ -93,25 +97,7 @@ async function captureSlide(
     box-sizing: border-box !important;
     color-scheme: light !important;
   `;
-  clone.querySelectorAll<HTMLElement>("*").forEach((node) => {
-    const style = window.getComputedStyle(node);
-    if (
-      style.overflow === "scroll" ||
-      style.overflow === "auto" ||
-      style.overflowY === "scroll" ||
-      style.overflowY === "auto" ||
-      style.overflowX === "scroll" ||
-      style.overflowX === "auto"
-    ) {
-      node.style.overflow = "none";
-      node.style.overflowX = "none";
-      node.style.overflowY = "none";
-      node.style.height = "auto";
-      node.style.maxHeight = "none";
-      node.style.width = "auto";
-      node.style.maxWidth = "none";
-    }
-  });
+
   // hide interactive elements in clone
   clone
     .querySelectorAll<HTMLElement>(
@@ -133,18 +119,6 @@ async function captureSlide(
 
   wrapper.appendChild(clone);
   document.body.appendChild(wrapper);
-  // re-measure after scroll containers are expanded
-  await new Promise((r) => requestAnimationFrame(r));
-  const expandedH = Math.max(clone.scrollHeight, clone.offsetHeight, contentH);
-
-  // update wrapper height if content grew
-  if (expandedH > contentH) {
-    contentH = expandedH;
-    wrapper.style.height = `${expandedH}px`;
-  }
-  // page = content + margin on all 4 sides
-  const pageW = contentW + MARGIN * 2;
-  const pageH = contentH + MARGIN * 2;
 
   // wait for charts to re-paint in new position
   await new Promise((r) => requestAnimationFrame(r));
@@ -168,7 +142,10 @@ async function captureSlide(
         colorScheme: "light",   // force light mode inside capture context
       },
       filter: (node) => {
-        // strip any fixed-position elements that escaped the clone
+        // filter broken image nodes
+        if (node instanceof HTMLImageElement && !node.complete) return false;
+        if (node instanceof HTMLImageElement && node.naturalWidth === 0) return false;
+
         if (
           node instanceof HTMLElement &&
           node !== wrapper &&
@@ -260,7 +237,7 @@ export async function captureLocationIntelligencePdf(
   const pdfCaptureRoot = document.getElementById(
     "pdfCaptureRoot",
   ) as HTMLElement | null;
-  if (pdfCaptureRoot) pdfCaptureRoot.style.maxWidth = `1440px`;
+  if (pdfCaptureRoot) pdfCaptureRoot.style.maxWidth = `${SLIDE_CSS_W}px`;
 
   const slides = Array.from(
     root.querySelectorAll<HTMLElement>("[data-li-pdf-slide]"),
